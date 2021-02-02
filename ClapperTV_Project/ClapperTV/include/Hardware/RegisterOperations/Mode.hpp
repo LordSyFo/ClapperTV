@@ -13,6 +13,7 @@
 
 extern "C"{
 	#include <stdlib.h>
+	#include <Hardware/uart.h>
 };
 
 #define F_CPU 16000000
@@ -20,6 +21,11 @@ extern "C"{
 
 namespace Hardware {
 namespace PWM{
+
+	long my_abs(long value) {
+		long s = value >> 31;
+		return (value ^ s) - s;
+	}
 
 	// Mode types
 	struct FastMode {};
@@ -31,24 +37,22 @@ namespace PWM{
 	//TODO: Use dutycycle parameter!
 
 	static uint FindOCRA(uint Frequency){
-		unsigned long diff = F_CPU;
-		unsigned long i = 1;
+		long diff = F_CPU;
+		long i = 1;
 		
 		for (i = 1; i < 256; i++){
-			unsigned long tmp_freq = F_CPU * (1 / (PRESCALE_VALUE*2*i*2));
+			long tmp_freq = F_CPU / PRESCALE_VALUE / 2 / i / 2;
 			
-			/*
-				diff1 = 3964000;
-				diff2 = 1964000;
-			*/
+			long tmp_diff = my_abs(tmp_freq - Frequency);
 			
-			if (diff > abs(tmp_freq-Frequency))
-				diff = abs(tmp_freq-Frequency);
+			if (diff > tmp_diff)
+				diff = tmp_diff;
 			else
 				break;
 			
 		}
-		return i;
+		
+		return i - 1;
 	}
 
 	template<uint Frequency>

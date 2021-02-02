@@ -10,6 +10,10 @@
 #include <Hardware/RegisterOperations/Mode.hpp>
 #include <Hardware/RegisterOperations/Prescale.hpp>
 
+extern "C"{
+	#include <Hardware/uart.h>
+}
+
 int main(void)
 {
 	
