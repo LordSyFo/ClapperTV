@@ -5,7 +5,6 @@
  *  Author: hejmi
  */ 
 
-
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
@@ -30,8 +29,6 @@
 	#define TCCRA TCCR2A
 	#define TCCRB TCCR2B
 #endif
-
-
 
 
 #endif /* CONFIG_H_ */

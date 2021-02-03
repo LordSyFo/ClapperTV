@@ -61,12 +61,22 @@ namespace PWM{
 			// TODO: Implement
 			// Fastmode WGM(1 1 1) update on TOP = OCR0A
 			//TCCRB |= (1<<WGM02);
-			TCCRA |= (1<<WGM00) | (1<<WGM01) | (1<<COM0A1) & ~(1<<COM0A0);
+			TCCRA = (1<<WGM00) | (1<<WGM01) | (1<<COM0A1) & ~(1<<COM0A0);	// TODO: Make sure that COM0A0 is actually disabled, instead of |= could be =
 			
 			OCR0A = 126;
 			
 			
 		}
+		
+		inline static void TurnOn(){
+			TCCRA |= (1<<COM0A1);	// might be more safe to make sure COM0A0 is also shut off but hey whatever
+		}
+		
+		inline static void TurnOff(){
+			TCCRA &= ~(1<<COM0A1);
+		}
+		
+		
 	};
 	
 	template<uint Frequency>
@@ -84,7 +94,17 @@ namespace PWM{
 
 	template<typename T, uint Frequency>
 	struct Mode {
-	
+		
+		inline static void TurnOn()
+		{
+			return ModeImpl<T, Frequency>::TurnOn();
+		}
+		
+		inline static void TurnOff()
+		{
+			return ModeImpl<T, Frequency>::TurnOff();
+		}
+		
 		static void Set(){
 			return ModeImpl<T, Frequency>::Set();
 		}

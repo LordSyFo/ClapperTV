@@ -16,6 +16,7 @@ namespace PWM {
 	
 using uint = unsigned long int;
 
+// TODO: Should just be templatized from timer number and frequency!
 /* Static PWM class - cannot be changed after frequency is set */
 template<typename PrescalerPolicy, typename ModePolicy>
 class Controller {
@@ -30,10 +31,20 @@ class Controller {
 	inline void SetupPins()
 	{
 		//DIRECTION_PORT |= (1<<PWM_PIN_A); 
+		// TODO: Should be delegated to policy
 		DIRECTION_PORT = 0xFF;
 		PWM_PORT_A = 0;
 		
 	}
+	
+	void TurnOn(){
+		return ModePolicy::TurnOn();
+	}
+	
+	void TurnOff(){
+		return ModePolicy::TurnOff();
+	}
+	
 	
 	inline void Setup() {
 		PrescalerPolicy::Set();

@@ -173,6 +173,9 @@
     <Compile Include="include\Hardware\RegisterOperations\Prescale.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\Hardware\RegisterOperations\Register.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\Hardware\uart.c">
       <SubType>compile</SubType>
     </Compile>
