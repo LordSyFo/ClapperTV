@@ -161,9 +161,6 @@
     <Compile Include="include\Hardware\PWM.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\RegisterOperations\Config.hpp">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="include\Hardware\RegisterOperations\Counter.hpp">
       <SubType>compile</SubType>
     </Compile>

@@ -8,55 +8,58 @@
 #ifndef PRESCALE_H_
 #define PRESCALE_H_
 
-#include "Config.hpp"
-
 namespace Hardware {
 namespace PWM {
-
-template<uint>
+	
+template<typename TimerType, uint>
 struct PrescaleSetupImpl;
 
-template<>
-struct PrescaleSetupImpl<1> {
-	inline static void Set(){
-		TCCRB |= (1<<CS00) & ~(1<<CS01) & ~(1<<CS02);
+template<typename TimerType>
+struct PrescaleSetupImpl<TimerType,1> {
+	inline static void Setup(TimerType& Timer){
+		Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.CS0);
+		//TCCRB |= (1<<CS00) & ~(1<<CS01) & ~(1<<CS02);
 	}
 };
 
-template<>
-struct PrescaleSetupImpl<8> {
-	inline static void Set(){
-		TCCRB |= (1<<CS01) & ~(1<<CS00) & ~(1<<CS02);
+template<typename TimerType>
+struct PrescaleSetupImpl<TimerType,8> {
+	inline static void Setup(TimerType& Timer){
+		Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.CS1);
+		//TCCRB |= (1<<CS01) & ~(1<<CS00) & ~(1<<CS02);
 	}
 };
 
-template<>
-struct PrescaleSetupImpl<64> {
-	inline static void Set(){
-		TCCRB |= (1<<CS00) | (1<<CS01) & ~(1<<CS02);
+template<typename TimerType>
+struct PrescaleSetupImpl<TimerType,64> {
+	inline static void Setup(TimerType& Timer){
+		Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.CS0, Timer.TCCRBReg.CS1);
+		//TCCRB |= (1<<CS00) | (1<<CS01) & ~(1<<CS02);
 	}
 };
 
-template<>
-struct PrescaleSetupImpl<256> {
-	inline static void Set(){
-		TCCRB |= (1<<CS02) & ~(1<<CS00) & ~(1<<CS01);
+template<typename TimerType>
+struct PrescaleSetupImpl<TimerType,256> {
+	inline static void Setup(TimerType& Timer){
+		Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.CS2);
+		//TCCRB |= (1<<CS02) & ~(1<<CS00) & ~(1<<CS01);
 	}
 };
 
-template<>
-struct PrescaleSetupImpl<1024> {
-	inline static void Set(){
-		TCCRB |= (1<<CS02) | (1<<CS00) & ~(1<<CS01);
+template<typename TimerType>
+struct PrescaleSetupImpl<TimerType,1024> {
+	inline static void Setup(TimerType& Timer){
+		Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.CS0, Timer.TCCRBReg.CS2);
+		//TCCRB |= (1<<CS02) | (1<<CS00) & ~(1<<CS01);
 	}
 };
 
-template<uint Prescale>
+template<typename TimerType,uint Prescale>
 struct PrescaleSetup {
 
-	static void Set(){
+	static void Setup(TimerType& Timer){
 		static_assert(Prescale==1 || Prescale==8 || Prescale==64 || Prescale==256 || Prescale==1024, "Prescaler has an invalid value.");
-		return PrescaleSetupImpl<Prescale>::Set();
+		return PrescaleSetupImpl<TimerType,Prescale>::Setup(Timer);
 	}
 	
 };

@@ -9,7 +9,8 @@
 #ifndef MODE_H_
 #define MODE_H_
 
-#include "Config.hpp"
+#include "Register.hpp"
+#include "Prescale.hpp"
 
 extern "C"{
 	#include <stdlib.h>
@@ -26,13 +27,6 @@ namespace PWM{
 		long s = value >> 31;
 		return (value ^ s) - s;
 	}
-
-	// Mode types
-	struct FastMode {};
-	struct PhaseCorrectMode {};
-
-	template<typename T, uint Frequency>
-	struct ModeImpl;
 
 	//TODO: Use dutycycle parameter!
 
@@ -54,59 +48,44 @@ namespace PWM{
 		
 		return i - 1;
 	}
-
-	template<uint Frequency>
-	struct ModeImpl<FastMode, Frequency>{
-		static void Set(){
-			// TODO: Implement
-			// Fastmode WGM(1 1 1) update on TOP = OCR0A
-			//TCCRB |= (1<<WGM02);
-			TCCRA = (1<<WGM00) | (1<<WGM01) | (1<<COM0A1) & ~(1<<COM0A0);	// TODO: Make sure that COM0A0 is actually disabled, instead of |= could be =
-			
-			OCR0A = 126;
-			
-			
-		}
-		
-		inline static void TurnOn(){
-			TCCRA |= (1<<COM0A1);	// might be more safe to make sure COM0A0 is also shut off but hey whatever
-		}
-		
-		inline static void TurnOff(){
-			TCCRA &= ~(1<<COM0A1);
-		}
-		
-		
-	};
 	
-	template<uint Frequency>
-	struct ModeImpl<PhaseCorrectMode, Frequency>{
-		static void Set(){
-
-			TCCRA |= (1<<COM0A0) | (1<<COM0B1) | (1<<WGM00);
-			TCCRB |= (1<<WGM02);
+	template<typename TimerType,uint Frequency>
+	struct ModeImpl {
+		static void Setup(TimerType& Timer){
 			
-			OCR0A = FindOCRA(Frequency);
-			//OCR0B = 22;
+			Timer.TCCRAReg.ActivateBits(Timer.TCCRAReg.COMA0, Timer.TCCRAReg.COMB1, Timer.TCCRAReg.WGM0);
+			Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.WGM2);
+			
+			PrescaleSetup<TimerType, PRESCALE_VALUE>::Setup(Timer);
+			
+			Timer.OCRAReg.Set(FindOCRA(Frequency));
 
+		}
+		
+		static void TurnOn(TimerType& Timer){
+			Timer.TCCRAReg.ActivateBits(Timer.TCCRAReg.COMA0);
+		}
+		
+		static void TurnOff(TimerType& Timer){
+			Timer.TCCRAReg.DeactivateBits(Timer.TCCRAReg.COMA0);
 		}
 	};
 
-	template<typename T, uint Frequency>
+	template<typename TimerType, uint Frequency>
 	struct Mode {
 		
-		inline static void TurnOn()
+		inline static void TurnOn(TimerType& Timer)
 		{
-			return ModeImpl<T, Frequency>::TurnOn();
+			return ModeImpl<TimerType, Frequency>::TurnOn(Timer);
 		}
 		
-		inline static void TurnOff()
+		inline static void TurnOff(TimerType& Timer)
 		{
-			return ModeImpl<T, Frequency>::TurnOff();
+			return ModeImpl<TimerType, Frequency>::TurnOff(Timer);
 		}
 		
-		static void Set(){
-			return ModeImpl<T, Frequency>::Set();
+		static void Setup(TimerType& Timer){
+			return ModeImpl<TimerType, Frequency>::Setup(Timer);
 		}
 	
 	};
