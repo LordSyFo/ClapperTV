@@ -14,7 +14,7 @@
 
 extern "C"{
 	#include <stdlib.h>
-	#include <Hardware/uart.h>
+	#include <Hardware/Serial/UART/uart.h>
 };
 
 #define F_CPU 16000000			// TODO: Should keep CPU speed in a more modern manner to ensure that all files share the same constant..

@@ -176,10 +176,13 @@
     <Compile Include="include\Hardware\PWM\Prescale.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\uart.c">
+    <Compile Include="include\Hardware\Serial\UART\uart.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\uart.h">
+    <Compile Include="include\Hardware\Serial\UART\uart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\TVController\SamsungCtrl.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.cpp">
@@ -189,7 +192,10 @@
   <ItemGroup>
     <Folder Include="include" />
     <Folder Include="include\Hardware\" />
+    <Folder Include="include\Hardware\Serial" />
     <Folder Include="include\Hardware\PWM" />
+    <Folder Include="include\Hardware\Serial\UART" />
+    <Folder Include="include\TVController" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
