@@ -11,7 +11,7 @@
 
 typedef unsigned long int uint;
 
-#include "RegisterOperations/Mode.hpp"
+#include "Hardware/PWM/Mode.hpp"
 
 namespace Hardware {
 namespace PWM {

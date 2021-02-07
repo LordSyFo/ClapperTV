@@ -9,7 +9,7 @@
 #ifndef MODE_H_
 #define MODE_H_
 
-#include "Register.hpp"
+//#include "Register.hpp"
 #include "Prescale.hpp"
 
 extern "C"{
@@ -17,11 +17,11 @@ extern "C"{
 	#include <Hardware/uart.h>
 };
 
-#define F_CPU 16000000
+#define F_CPU 16000000			// TODO: Should keep CPU speed in a more modern manner to ensure that all files share the same constant..
 #define PRESCALE_VALUE 1
 
 namespace Hardware {
-namespace PWM{
+namespace PWM {
 
 	long my_abs(long value) {
 		long s = value >> 31;

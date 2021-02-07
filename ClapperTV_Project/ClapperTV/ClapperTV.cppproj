@@ -158,19 +158,22 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="include\Hardware\PWM.hpp">
+    <Compile Include="include\Hardware\GPIO.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\RegisterOperations\Counter.hpp">
+    <Compile Include="include\Hardware\Modules.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\RegisterOperations\Mode.hpp">
+    <Compile Include="include\Hardware\PWM\Controller.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\RegisterOperations\Prescale.hpp">
+    <Compile Include="include\Hardware\Register.hpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\Hardware\RegisterOperations\Register.hpp">
+    <Compile Include="include\Hardware\PWM\Mode.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\Hardware\PWM\Prescale.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\Hardware\uart.c">
@@ -186,7 +189,7 @@
   <ItemGroup>
     <Folder Include="include" />
     <Folder Include="include\Hardware\" />
-    <Folder Include="include\Hardware\RegisterOperations" />
+    <Folder Include="include\Hardware\PWM" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

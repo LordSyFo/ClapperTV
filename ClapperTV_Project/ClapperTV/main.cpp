@@ -10,10 +10,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include <Hardware/PWM.hpp>
-#include <Hardware/RegisterOperations/Mode.hpp>
-#include <Hardware/RegisterOperations/Prescale.hpp>
-#include <Hardware/RegisterOperations/Register.hpp>
+#include <Hardware/PWM/Controller.hpp>
+#include <Hardware/Modules.hpp>
 
 extern "C"{
 	#include <Hardware/uart.h>
@@ -22,11 +20,11 @@ extern "C"{
 int main(void)
 {
 	
-	using namespace Hardware::PWM;
+	using namespace Hardware;
 	SendString("ON\r\n");
 	
 	// 36 kHz
-	Controller<Hardware::TIMER0,36000> PWMCtrl;
+	PWM::Controller<Module::TIMER0,36000> PWMCtrl;
 
 	
     /* Replace with your application code */
