@@ -158,6 +158,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="include\Hardware\ADC\Controller.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\Hardware\GPIO.hpp">
       <SubType>compile</SubType>
     </Compile>
@@ -192,6 +195,7 @@
   <ItemGroup>
     <Folder Include="include" />
     <Folder Include="include\Hardware\" />
+    <Folder Include="include\Hardware\ADC" />
     <Folder Include="include\Hardware\Serial" />
     <Folder Include="include\Hardware\PWM" />
     <Folder Include="include\Hardware\Serial\UART" />

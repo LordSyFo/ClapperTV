@@ -18,6 +18,8 @@ namespace Register {
 template<uint8_t Address>
 struct Register {
 	
+	static_assert((Address > 0), "Memory address is a negative number.");
+	
 	inline void Set(uint8_t value){
 		_SFR_IO8(Address) = value;
 	}
@@ -71,8 +73,44 @@ struct TCCRB0 : public Register<0x25> {
 
 struct OCRA0 : public Register<0x27> {};
 
-}
+/* For absolute addresses we need to subtract __SFR_OFFSET this is the case of the macros: _SFR_MEM8 */
+// TODO: Check that this approach actually works, otherwise we need to make a distinction between SFR_IO8 and SFR_MEM!
+struct ADMUX_ : public Register<0x7C - __SFR_OFFSET> {
+	static constexpr uint8_t REFS1_	= 7;
+	static constexpr uint8_t REFS0_	= 6;
+	static constexpr uint8_t ADLAR_	= 5;
+	static constexpr uint8_t MUX4_	= 4;
+	static constexpr uint8_t MUX3_	= 3;
+	static constexpr uint8_t MUX2_	= 2;
+	static constexpr uint8_t MUX1_	= 1;
+	static constexpr uint8_t MUX0_	= 0;
+};
 
+struct ADCSRB_ : public Register<0x7B - __SFR_OFFSET> {
+	static constexpr uint8_t ACME_	= 6;
+	static constexpr uint8_t MUX5_	= 3;
+	static constexpr uint8_t ADTS2_	= 2;
+	static constexpr uint8_t ADTS1_	= 1;
+	static constexpr uint8_t ADTS0_	= 0;
+};
+
+struct ADCSRA_ : public Register<0x7A - __SFR_OFFSET> {
+	static constexpr uint8_t ADEN_	= 7;
+	static constexpr uint8_t ADSC_	= 6;
+	static constexpr uint8_t ADATE_	= 5;
+	static constexpr uint8_t ADIF_	= 4;
+	static constexpr uint8_t ADIE_	= 3;
+	static constexpr uint8_t ADPS2_	= 2;
+	static constexpr uint8_t ADPS1_	= 1;
+	static constexpr uint8_t ADPS0_	= 0;
+};
+
+struct ADCH_ : public Register<0x79 - __SFR_OFFSET>{};
+struct ADCL_ : public Register<0x78 - __SFR_OFFSET>{};
+
+
+
+}
 }
 
 #endif /* REGISTER_H_ */

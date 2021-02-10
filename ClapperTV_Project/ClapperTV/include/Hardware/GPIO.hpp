@@ -40,7 +40,7 @@ struct GPIO {
 /* Constant GPIO's */
 struct OC1A : public GPIO<0x14, 0x13, 5> {};
 struct OC0A : public GPIO<0x05, 0x04, 7> {};
-	
+
 }
 }
 
