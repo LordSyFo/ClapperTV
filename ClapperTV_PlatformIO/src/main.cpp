@@ -21,8 +21,6 @@ extern "C"{
 
 int main(void)
 {
-	
-	// Send dumb string
 	using namespace Hardware;
 	SendString("ON\r\n");
 	
