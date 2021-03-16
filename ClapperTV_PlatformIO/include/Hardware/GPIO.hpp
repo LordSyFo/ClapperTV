@@ -11,17 +11,19 @@
 
 namespace Hardware {
 namespace GPIO {
-	
+
+enum Direction {Input = 0, Output = 1};
+
 //TODO: Maybe make lookup table for Direction addresses!
 /* GPIO Class */
 template<uint8_t Address, uint8_t DirectionAddress, uint8_t BitField>
 struct GPIO {
-	inline void SetDirection(bool Output)
+	inline void SetDirection(Direction dir)
 	{
-		if (Output)
-		_SFR_IO8(DirectionAddress) |= (1<<BitField);
+		if (dir)
+			_SFR_IO8(DirectionAddress) |= (1<<BitField);
 		else
-		_SFR_IO8(DirectionAddress) &= ~(1<<BitField);
+			_SFR_IO8(DirectionAddress) &= ~(1<<BitField);
 	}
 	
 	inline void Activate(){
@@ -40,6 +42,8 @@ struct GPIO {
 /* Constant GPIO's */
 struct OC1A : public GPIO<0x14, 0x13, 5> {};
 struct OC0A : public GPIO<0x05, 0x04, 7> {};
+
+struct ADC0_ : public GPIO<0x11, 0x10, 0> {};
 
 }
 }

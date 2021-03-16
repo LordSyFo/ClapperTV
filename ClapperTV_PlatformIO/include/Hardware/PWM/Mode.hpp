@@ -55,7 +55,7 @@ namespace PWM {
 			
 			Timer.TCCRAReg.ActivateBits(Timer.TCCRAReg.COMA0, Timer.TCCRAReg.COMB1, Timer.TCCRAReg.WGM0);
 			Timer.TCCRBReg.ActivateBits(Timer.TCCRBReg.WGM2);
-			
+
 			PrescaleSetup<TimerType, PRESCALE_VALUE>::Setup(Timer);
 			
 			Timer.OCRAReg.Set(FindOCRA(Frequency));

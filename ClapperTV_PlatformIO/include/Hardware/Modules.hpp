@@ -21,6 +21,7 @@ struct TIMER0 {
 		
 	}
 	
+	/* Registers */
 	Register::TCCRA0	TCCRAReg;
 	Register::TCCRB0	TCCRBReg;
 	Register::OCRA0		OCRAReg;
@@ -28,6 +29,25 @@ struct TIMER0 {
 	GPIO::OC1A			Output1;
 	
 };
+
+// TODO: Add support for more Timers
+
+struct ADC0_ {
+	constexpr ADC0_() {}
+
+	/* Registers */
+	Register::ADMUX_ ADMUXReg;
+	Register::ADCSRB_ ADCSRBReg;
+	Register::ADCSRA_ ADCSRAReg;
+	Register::ADCH_ ADCHReg;
+	Register::ADCL_ ADCLReg;
+
+	GPIO::ADC0_ ADCGPIO;
+	static constexpr uint8_t Id = 0;
+
+};
+
+//TODO: Add support for more ADCs
 
 }
 }

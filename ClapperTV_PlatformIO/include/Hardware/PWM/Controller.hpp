@@ -12,6 +12,7 @@
 typedef unsigned long int uint;
 
 #include "Hardware/PWM/Mode.hpp"
+#include "Hardware/GPIO.hpp"
 
 namespace Hardware {
 namespace PWM {
@@ -30,7 +31,7 @@ public:
 	{
 		//DIRECTION_PORT |= (1<<PWM_PIN_A); 
 		// TODO: Should be delegated to policy
-		timer_.Output0.SetDirection(true);
+		timer_.Output0.SetDirection(GPIO::Direction::Output);
 		timer_.Output0.Deactivate();
 		
 	}
