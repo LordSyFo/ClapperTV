@@ -18,6 +18,8 @@
 
 #include <Hardware/ADC/Controller.hpp>
 
+#include <Hardware/Timer/Controller.hpp>
+
 extern "C"{
 	#include <Hardware/Serial/UART/uart.h>
 }
@@ -38,23 +40,32 @@ int main(void)
 
 	AnalogToDigital::Controller<Module::ADC0_> adcController;
 
+	Timer::Controller<Module::TIMER1> timerCtrl;
+
     /* Replace with your application code */
     while (1)
     {
 
-		uint16_t value = adcController.Read();
+		SendString("Count:\r\n");
+		timerCtrl.Start();
+		_delay_ms(1000);
+		SendInteger(timerCtrl.Stop());
+		
+		//_delay_ms(100);
+
+		/*uint16_t value = adcController.Read();
 
 		SendString("\r\n");
 		SendInteger(value);
 
-		/*SendString("ADCSRB\r\n");
+		SendString("ADCSRB\r\n");
 		SendInteger(ADCSRB);
 		SendString("ADCSRA\r\n");
 		SendInteger(ADCSRA);
 		SendString("ADMUX\r\n");
-		SendInteger(ADMUX);*/
+		SendInteger(ADMUX);
 		
 		TVRemote.SendPowerCode();
-		_delay_ms(100);
+		_delay_ms(100);*/
     }
 }

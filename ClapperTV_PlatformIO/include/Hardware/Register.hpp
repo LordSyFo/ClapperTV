@@ -53,7 +53,7 @@ struct Register {
 };
 
 /* Constant registers */
-struct TCCRA0 : public Register<0x24> {
+struct TCCR0A_ : public Register<0x24> {
 	static constexpr uint8_t COMA1 = 7;
 	static constexpr uint8_t COMA0 = 6;
 	static constexpr uint8_t COMB1 = 5;
@@ -62,7 +62,7 @@ struct TCCRA0 : public Register<0x24> {
 	static constexpr uint8_t WGM0	= 0;
 };
 
-struct TCCRB0 : public Register<0x25> {
+struct TCCR0B_ : public Register<0x25> {
 	static constexpr uint8_t FOCA	= 7;
 	static constexpr uint8_t FOCB	= 6;
 	static constexpr uint8_t WGM2	= 3;
@@ -71,7 +71,53 @@ struct TCCRB0 : public Register<0x25> {
 	static constexpr uint8_t CS0	= 0;
 };
 
-struct OCRA0 : public Register<0x27> {};
+struct TCCR1A_ : public Register<0x80 - __SFR_OFFSET> {
+	static constexpr uint8_t COMA1 = 7;
+	static constexpr uint8_t COMA0 = 6;
+	static constexpr uint8_t COMB1 = 5;
+	static constexpr uint8_t COMB0 = 4;
+	static constexpr uint8_t WGM1	= 1;
+	static constexpr uint8_t WGM0	= 0;
+};
+
+
+struct TCCR1B_ : public Register<0x81 - __SFR_OFFSET> {
+	static constexpr uint8_t ICNC	= 7;
+	static constexpr uint8_t ICES	= 6;
+	static constexpr uint8_t WGM3	= 4;
+	static constexpr uint8_t WGM2	= 3;
+	static constexpr uint8_t CS2	= 2;
+	static constexpr uint8_t CS1	= 1;
+	static constexpr uint8_t CS0	= 0;
+};
+
+struct TCCR1C_ : public Register<0x82 - __SFR_OFFSET> {
+	static constexpr uint8_t FOCA	= 7;
+	static constexpr uint8_t FOCB	= 6;
+	static constexpr uint8_t FOCC	= 5;
+};
+
+struct TIMSK1_ : public Register<0x6F - __SFR_OFFSET> {
+	static constexpr uint8_t ICIE	= 5;
+	static constexpr uint8_t OCIEC	= 3;
+	static constexpr uint8_t OCIEB	= 2;
+	static constexpr uint8_t OCIEA	= 1;
+	static constexpr uint8_t TOIE	= 0;
+};
+
+struct TCNT1H_ : public Register<0x85 - __SFR_OFFSET> {};
+struct TCNT1L_ : public Register<0x84 - __SFR_OFFSET> {};
+
+struct OCR1AH_ : public Register<0x89 - __SFR_OFFSET> {};
+struct OCR1AL_ : public Register<0x88 - __SFR_OFFSET> {};
+
+struct OCR1BH_ : public Register<0x8B - __SFR_OFFSET> {};
+struct OCR1BL_ : public Register<0x8A - __SFR_OFFSET> {};
+
+struct OCR1CH_ : public Register<0x8D - __SFR_OFFSET> {};
+struct OCR1CL_ : public Register<0x8C - __SFR_OFFSET> {};
+
+struct OCR0A_ : public Register<0x27> {};
 
 /* For absolute addresses we need to subtract __SFR_OFFSET this is the case of the macros: _SFR_MEM8 */
 // TODO: Check that this approach actually works, otherwise we need to make a distinction between SFR_IO8 and SFR_MEM!
