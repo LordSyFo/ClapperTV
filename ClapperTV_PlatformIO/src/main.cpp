@@ -18,7 +18,7 @@
 
 #include <Hardware/ADC/Controller.hpp>
 
-#include <Hardware/Timer/Controller.hpp>
+#include <Hardware/Timer/StopWatch.hpp>
 
 extern "C"{
 	#include <Hardware/Serial/UART/uart.h>
@@ -26,6 +26,8 @@ extern "C"{
 
 int main(void)
 {
+	sei();  // Enable global interrupts
+
 	using namespace Hardware;
 
 	InitUART(9600, 8, 'N');
@@ -40,16 +42,16 @@ int main(void)
 
 	AnalogToDigital::Controller<Module::ADC0_> adcController;
 
-	Timer::Controller<Module::TIMER1> timerCtrl;
+	Timer::StopWatch stopWatch;
 
     /* Replace with your application code */
     while (1)
     {
 
 		SendString("Count:\r\n");
-		timerCtrl.Start();
+		stopWatch.Start();
 		_delay_ms(1000);
-		SendInteger(timerCtrl.Stop());
+		SendInteger(stopWatch.Stop());
 		
 		//_delay_ms(100);
 
