@@ -34,24 +34,22 @@ public:
 		adc_.ADCGPIO.SetDirection(GPIO::Direction::Input);
 
 		// Select the channel
-		SetupChannel();
+		SelectChannel(0);
 		
 		// Internal 5V reference
 		adc_.ADMUXReg.ActivateBits(adc_.ADMUXReg.REFS0_);
+		
+		// Set prescaler = 128 -> 8MHz / 128 = 62.5kHz
+		adc_.ADCSRAReg.ActivateBits(adc_.ADCSRAReg.ADPS0_,
+					    adc_.ADCSRAReg.ADPS1_,
+					    adc_.ADCSRAReg.ADPS0_,
+					    adc_.ADCSRAReg.ADEN_);
 	}
 
-	inline void SetupChannel(){
-		constexpr uint8_t MUXValue = ADCSelector<ADCType::Id>::value;
-
-		// Select the appropriate channel
+	inline void SelectChannel(uint8_t channel)
+	{
 		uint8_t tmp = adc_.ADMUXReg.Get();
-		tmp |= ((MUXValue & 1) | (MUXValue & 2) | (MUXValue & 4) | (MUXValue & 8) | (MUXValue & 16));
-		adc_.ADMUXReg.Set(tmp);
-
-		tmp = adc_.ADCSRBReg.Get();
-		tmp |= (MUXValue & 0b00010000) >> 2;
-		adc_.ADCSRBReg.Set(tmp);
-
+		adc_.ADMUXReg.Set(tmp & (0xF0 + channel));
 	}
 
 	inline void Enable(){
@@ -67,7 +65,8 @@ public:
 	}
 
 	inline void WaitConversion(){
-		while(adc_.ADCSRAReg.Get() & adc_.ADCSRAReg.ADSC_);
+		while(ADCSRA & (1<<ADSC));
+		//while(adc_.ADCSRAReg.Get() & adc_.ADCSRAReg.ADSC_);	TODO: Find out why the hell this doesnt work? I added specialization for MEM8 adresses
 	}
 
 	// Should probably never be used
@@ -77,8 +76,20 @@ public:
 	}
 
 	inline uint16_t Read(){
+		//select ADC channel with safety mask
+		SelectChannel(0);
+
+		//single conversion mode
+		//ADCSRA |= (1<<ADSC);
+
+		// wait until ADC conversion is complete
+		//while( ADCSRA & (1<<ADSC) );
+		//return ADC;
+
 		StartConversion();
 		WaitConversion();
+		return ADC;
+
 		uint16_t low = adc_.ADCLReg.Get();
 		return low | ((uint16_t)adc_.ADCHReg.Get() << 8);
 	}

@@ -48,26 +48,37 @@ int main(void)
     while (1)
     {
 
-		SendString("Count:\r\n");
+		/*SendString("Count:\r\n");
 		stopWatch.Start();
 		_delay_ms(1000);
-		SendInteger(stopWatch.Stop());
+		SendInteger(stopWatch.Stop());*/
 		
 		//_delay_ms(100);
 
-		/*uint16_t value = adcController.Read();
+		uint16_t value = adcController.Read();
 
-		SendString("\r\n");
-		SendInteger(value);
+		/*float signal = value * (5.f / 1024.f);
+		char buffer[10];
+		sprintf(buffer, "%f,", signal);
+		SendString(buffer);*/
 
-		SendString("ADCSRB\r\n");
+		//SendString("\r\n");
+		//SendInteger(value);
+
+		if (value > 700)
+		{
+			stopWatch.Start();
+			SendString("High value read!\r\n");
+		}
+
+		/*SendString("ADCSRB\r\n");
 		SendInteger(ADCSRB);
 		SendString("ADCSRA\r\n");
 		SendInteger(ADCSRA);
 		SendString("ADMUX\r\n");
-		SendInteger(ADMUX);
+		SendInteger(ADMUX);*/
 		
-		TVRemote.SendPowerCode();
-		_delay_ms(100);*/
+		//TVRemote.SendPowerCode();
+		//_delay_ms(100);
     }
 }

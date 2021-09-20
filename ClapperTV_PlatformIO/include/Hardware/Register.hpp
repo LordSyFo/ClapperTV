@@ -14,9 +14,15 @@
 namespace Hardware {
 namespace Register {
 	
+struct SFR_MEM8;
+struct SFR_IO8;
+
 /* Register class */
+template<uint8_t Address, typename T = SFR_IO8>
+struct Register;
+
 template<uint8_t Address>
-struct Register {
+struct Register<Address, SFR_IO8> {
 	
 	static_assert((Address > 0), "Memory address is a negative number.");
 	
@@ -50,6 +56,42 @@ struct Register {
 		_SFR_IO8(Address) &= ~(1<<first);
 	}
 	
+};
+
+template<uint8_t Address>
+struct Register<Address, SFR_MEM8> {
+	
+	static_assert((Address > 0), "Memory address is a negative number.");
+	
+	inline void Set(uint8_t value){
+		_SFR_MEM8(Address) = value;
+	}
+	
+	inline uint8_t Get(){
+		return _SFR_MEM8(Address);
+	}
+	
+	template<typename TFirst, typename... Targs>
+	inline void ActivateBits(TFirst first, Targs... args){
+		_SFR_MEM8(Address) |= (1<<first);
+		ActivateBits(args...);
+	}
+	
+	template<typename TFirst>
+	inline void ActivateBits(TFirst first){
+		_SFR_MEM8(Address) |= (1<<first);
+	}
+	
+	template<typename TFirst, typename... Targs>
+	inline void DeactivateBits(TFirst first, Targs... args){
+		_SFR_MEM8(Address) &= ~(1<<first);
+		DeactivateBits(args...);
+	}
+	
+	template<typename TFirst>
+	inline void DeactivateBits(TFirst first){
+		_SFR_MEM8(Address) &= ~(1<<first);
+	}
 };
 
 /* Constant registers */
@@ -121,7 +163,7 @@ struct OCR0A_ : public Register<0x27> {};
 
 /* For absolute addresses we need to subtract __SFR_OFFSET this is the case of the macros: _SFR_MEM8 */
 // TODO: Check that this approach actually works, otherwise we need to make a distinction between SFR_IO8 and SFR_MEM!
-struct ADMUX_ : public Register<0x7C - __SFR_OFFSET> {
+struct ADMUX_ : public Register<0x7C, SFR_MEM8> {
 	static constexpr uint8_t REFS1_	= 7;
 	static constexpr uint8_t REFS0_	= 6;
 	static constexpr uint8_t ADLAR_	= 5;
@@ -132,7 +174,7 @@ struct ADMUX_ : public Register<0x7C - __SFR_OFFSET> {
 	static constexpr uint8_t MUX0_	= 0;
 };
 
-struct ADCSRB_ : public Register<0x7B - __SFR_OFFSET> {
+struct ADCSRB_ : public Register<0x7B, SFR_MEM8> {
 	static constexpr uint8_t ACME_	= 6;
 	static constexpr uint8_t MUX5_	= 3;
 	static constexpr uint8_t ADTS2_	= 2;
@@ -140,7 +182,7 @@ struct ADCSRB_ : public Register<0x7B - __SFR_OFFSET> {
 	static constexpr uint8_t ADTS0_	= 0;
 };
 
-struct ADCSRA_ : public Register<0x7A - __SFR_OFFSET> {
+struct ADCSRA_ : public Register<0x7A, SFR_MEM8> {
 	static constexpr uint8_t ADEN_	= 7;
 	static constexpr uint8_t ADSC_	= 6;
 	static constexpr uint8_t ADATE_	= 5;
@@ -151,10 +193,8 @@ struct ADCSRA_ : public Register<0x7A - __SFR_OFFSET> {
 	static constexpr uint8_t ADPS0_	= 0;
 };
 
-struct ADCH_ : public Register<0x79 - __SFR_OFFSET>{};
-struct ADCL_ : public Register<0x78 - __SFR_OFFSET>{};
-
-
+struct ADCH_ : public Register<0x79, SFR_MEM8>{};
+struct ADCL_ : public Register<0x78, SFR_MEM8>{};
 
 }
 }

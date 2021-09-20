@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/syfo/git/ClapperTV/ClapperTV_PlatformIO'
+make: Leaving directory '/home/syfo/git/ClapperTV/ClapperTV_PlatformIO'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+ 
