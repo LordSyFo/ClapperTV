@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "qtwidgets": "cpp",
+        "qwidget": "cpp",
+        "qlineseries": "cpp"
+    }
+}
